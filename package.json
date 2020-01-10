@@ -8,7 +8,6 @@
     "dev": "./node_modules/nodemon/bin/nodemon.js --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts",
     "build": "tsc",
     "start": "node build/server",
-    "script": "ts-node src/script.ts",
     "test": "./node_modules/mocha/bin/mocha -r ts-node/register test/**/*.ts",
     "test-unit": "./node_modules/mocha/bin/mocha -r ts-node/register test/unit/*.ts",
     "test-integration": "./node_modules/mocha/bin/mocha -r ts-node/register test/integration/*.ts"
