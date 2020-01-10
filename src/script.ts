@@ -1,11 +1,8 @@
 import { ethers } from "ethers";
 import * as colors from 'colors/safe';
-
+import DB from './db';
 import config from './config';
 import Stock from './managers/Stock';
-import Bzx from "./managers/bzx";
-import Compound from "./managers/compound";
-import Dydx from "./managers/dydx";
 import Uniswap from './managers/uniswap';
 
 const H24: number = 86400000;
@@ -25,9 +22,6 @@ class Collector {
     public network;
     public blockNumber: number;
 
-    private dydx: Dydx;
-    private compound: Compound;
-    private bzx: Bzx;
     private VTI: Stock;
     private TLT: Stock;
     private IEI: Stock;
@@ -39,10 +33,6 @@ class Collector {
 
         this.provider = ethers.getDefaultProvider();
         this.network = await this.provider.getNetwork();
-
-        this.dydx = new Dydx();
-        this.compound = new Compound();
-        this.bzx = new Bzx();
 
         this.VTI = new Stock('VTI');
         this.TLT = new Stock('TLT');
@@ -58,10 +48,6 @@ class Collector {
 
         if (this.blockNumber !== blockNumber) {
             this.blockNumber = blockNumber;
-
-            this.collectAndStoreDydx();
-            this.collectAndStoreCompound();
-            this.collectAndStoreBzx();
         }
     }
 
@@ -85,19 +71,10 @@ class Collector {
     private collectAndStoreDydx() {
         global.console.log("");
     }
-
-    private async collectAndStoreCompound() {
-        subtitle("Collecting and Storing Compound data");
-        this.compound.storeRates(this.blockNumber, await this.compound.getRates());
-    }
-
-    private async collectAndStoreBzx() {
-        subtitle("Collecting and Storing Bzx data");
-        this.bzx.storeRates(this.blockNumber, await this.bzx.getRates());
-    }
 }
 
 (async () => {
+    await DB();
     const collector = new Collector();
     await collector.setup();
 
