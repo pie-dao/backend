@@ -11,6 +11,7 @@ import stockController from "./controllers/stock";
 import chartsController from "./controllers/charts";
 import cryptoController from "./controllers/crypto";
 import portfolioController from "./controllers/portfolio";
+import uniswapController from "./controllers/uniswap";
 
 const PORT: number = Number(config.PORT);
 const app = new Koa();
@@ -50,6 +51,8 @@ app.use(chartsController.allowedMethods());
 app.use(cryptoController.routes());
 app.use(cryptoController.allowedMethods());
 
+app.use(uniswapController.routes());
+app.use(uniswapController.allowedMethods());
 
 
 

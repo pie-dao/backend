@@ -1,21 +1,24 @@
 import { ethers } from "ethers";
 import * as colors from 'colors/safe';
 
+import config from './config';
 import Stock from './managers/Stock';
 import Bzx from "./managers/bzx";
 import Compound from "./managers/compound";
 import Dydx from "./managers/dydx";
+import Uniswap from './managers/uniswap';
 
 const H24: number = 86400000;
 const H1: number = 3600000;
 const M5: number = 300000;
 const S15: number = 15000;
 
-
 const rainbow = (t) => global.console.log(colors.rainbow(t));
 const title = (t) => global.console.log(colors.red(colors.underline(t)));
 const subtitle = (t) => global.console.log(colors.yellow(t));
 const log = (t) => global.console.log(colors.magenta(t));
+
+
 
 class Collector {
     public provider;
@@ -102,4 +105,11 @@ class Collector {
     collector.collectAllRates()
     collector.collectDailyPriceFeed()
     setInterval(() => collector.collectDailyPriceFeed(), M5);
+
+    const uniswaps = [];
+    const uniswapProvider = ethers.getDefaultProvider(config.UNISWAP_NETWORK);
+
+    config.UNISWAP_TOKENS.split(',').forEach((token) => {
+      uniswaps.push(new Uniswap(token, uniswapProvider));
+    });
 })();
