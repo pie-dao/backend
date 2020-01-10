@@ -15,10 +15,7 @@ const uniswapSchema = new mongoose.Schema({
 });
 
 uniswapSchema.static('findOneOrCreate', async function findOneOrCreate(condition, doc) {
-  console.log('here');
-
   const one = await this.findOne(condition);
-  console.log(one);
   return one || this.create(doc);
 });
 
