@@ -1,5 +1,6 @@
 import * as Koa from "koa";
 import * as Router from "koa-router";
+import * as moment from "moment";
 
 import Prices from "../managers/Prices";
 import Stock from "../managers/Stock";
@@ -56,7 +57,7 @@ router.get("/:token/monthly/chart", async (ctx: Koa.Context) => {
     ctx.body = flat;
 });
 
-router.get("/:token/now", async (), async (ctx: Koa.Context) => {
+router.get("/:token/now", async (ctx: Koa.Context) => {
     const rates = new Stock(ctx.params.token);
     const allRates = await rates.getRates();
     const data = allRates.data as any[];
