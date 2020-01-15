@@ -16,6 +16,7 @@ const DEFAULT_CANDLE_VAL = "open";
 type AssetType = Stock | Crypto;
 
 interface AssetsConfig {
+    initialPrice?: number,
     ratio: number,
     asset: AssetType
 }
