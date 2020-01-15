@@ -44,11 +44,6 @@ router.get("/:token/daily", async (ctx: Koa.Context) => {
     ctx.body = await rates.getLast(ctx.params.token);
 });
 
-router.get("/:token/day", async (ctx: Koa.Context) => {
-    const rates = new Stock(ctx.params.token);
-    ctx.body = await rates.getRates();
-});
-
 router.get("/:token/monthly", async (ctx: Koa.Context) => {
     const rates = new Stock(ctx.params.token);
     ctx.body = await rates.getRates('MONTHLY');
@@ -59,6 +54,13 @@ router.get("/:token/monthly/chart", async (ctx: Koa.Context) => {
     const res = await rates.getRates('MONTHLY');
     const flat = toChart(res.data, ctx.params.token);
     ctx.body = flat;
+});
+
+router.get("/:token/now", async (), async (ctx: Koa.Context) => {
+    const rates = new Stock(ctx.params.token);
+    const { data } = await rates.getRates();
+    const today = data.find(rate => Object.keys(rate)[0] === moment().format('YYYY-MM-DD'));
+    ctx.body = Object.values(today)[0];
 });
 
 router.get("/:token/weekly", async (ctx: Koa.Context) => {
