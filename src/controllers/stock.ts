@@ -46,7 +46,7 @@ router.get("/:token/daily", async (ctx: Koa.Context) => {
 
 router.get("/:token/day", async (ctx: Koa.Context) => {
     const rates = new Stock(ctx.params.token);
-    ctx.body = await rates.getRatesDay();
+    ctx.body = await rates.getRates();
 });
 
 router.get("/:token/monthly", async (ctx: Koa.Context) => {
