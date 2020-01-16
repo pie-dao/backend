@@ -62,7 +62,7 @@ router.get("/:token/now", async (ctx: Koa.Context) => {
   const allRates = await rates.getRates();
   const data = (allRates.data || []) as any[];
   const today = data.find(rate => Object.keys(rate)[0] === moment().format('YYYY-MM-DD'));
-  ctx.body = (Object.values(today || {}))[0] || allRates.data[0];
+  ctx.body = (Object.values(today || allRates.data[0]))[0];
 });
 
 router.get("/:token/weekly", async (ctx: Koa.Context) => {
