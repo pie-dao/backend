@@ -112,12 +112,6 @@ export default class Stock {
     return flat_obj;
   }
 
-  public async lastStored() {
-    const res = await this.getRates();
-    const last_refreshed = Object.entries(res.data[0])[0][0];
-    return res.data[0][last_refreshed];
-  }
-
   /**
    * This function will save the values into the database.
    */
