@@ -65,35 +65,39 @@ export default class Stock {
 
     console.log('Fetching new data...', this.ticker);
 
-    const res = await axios.get(`${this.BaseUrl}function=${Timeframe[timeframe]}&symbol=${this.ticker}&apikey=${this.API_KEY}`)
-    console.log(`${this.BaseUrl}function=${Timeframe[timeframe]}&symbol=${this.ticker}&apikey=${this.API_KEY}`)
+    try {
+      const res = await axios.get(`${this.BaseUrl}function=${Timeframe[timeframe]}&symbol=${this.ticker}&apikey=${this.API_KEY}`)
+      console.log(`${this.BaseUrl}function=${Timeframe[timeframe]}&symbol=${this.ticker}&apikey=${this.API_KEY}`)
 
-    const flat_data: HistoricalData[] = Object.entries(res.data[JsonKeys[timeframe]]).map(([key, val]) => {
-      return {
-        [key] : {
-          open: val['1. open'],
-          high: val['2. high'],
-          low: val['3. low'],
-          close: val['4. close'],
-          volume: val['5. volume'],
+      const flat_data: HistoricalData[] = Object.entries(res.data[JsonKeys[timeframe]]).map(([key, val]) => {
+        return {
+          [key] : {
+            open: val['1. open'],
+            high: val['2. high'],
+            low: val['3. low'],
+            close: val['4. close'],
+            volume: val['5. volume'],
+          }
         }
+      });
+
+      const flat_obj: StockApiResponseMulti = {
+        symbol: res.data['Meta Data']['2. Symbol'],
+        last_refreshed: moment(res.data['Meta Data']['3. Last Refreshed']).utcOffset('00:00').format(),
+        data: flat_data
       }
-    });
 
-    const flat_obj: StockApiResponseMulti = {
-      symbol: res.data['Meta Data']['2. Symbol'],
-      last_refreshed: moment(res.data['Meta Data']['3. Last Refreshed']).utcOffset('00:00').format(),
-      data: flat_data
+      if( dbres ) {
+        await AssetModel.findOneAndUpdate({ symbol: flat_obj.symbol }, flat_obj);
+      } else {
+        await AssetModel.findOneOrCreate({ symbol: flat_obj.symbol }, flat_obj);
+      }
+
+      console.log('saved on db', flat_obj.last_refreshed)
+      return flat_obj;
+    } catch (e) {
+      return dbres;
     }
-
-    if( dbres ) {
-      await AssetModel.findOneAndUpdate({ symbol: flat_obj.symbol }, flat_obj);
-    } else {
-      await AssetModel.findOneOrCreate({ symbol: flat_obj.symbol }, flat_obj);
-    }
-
-    console.log('saved on db', flat_obj.last_refreshed)
-    return flat_obj;
   }
 
   public async getRatesDay() {
