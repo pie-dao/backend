@@ -16,6 +16,7 @@ const DEFAULT_CANDLE_VAL = "open";
 type AssetType = Stock | Crypto;
 
 interface AssetsConfig {
+    initialPrice?: number,
     ratio: number,
     asset: AssetType
 }
@@ -225,6 +226,7 @@ export default class Portfolio {
             roi_percentage: this.roi_percentage,
             MoM: this.MoM,
             assets: this.assetsConfig.map( o => { return {
+                initial_price: o.initialPrice,
                 ratio: o.ratio,
                 ticker: o.asset.ticker,
                 initial_allocation: (this.capitalStart * o.ratio),

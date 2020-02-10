@@ -1,5 +1,6 @@
 import * as Koa from "koa";
 import * as Router from "koa-router";
+import * as moment from "moment";
 
 import Prices from "../managers/Prices";
 import Crypto from "../managers/Crypto";
@@ -24,6 +25,14 @@ router.get("/:token/monthly/chart", async (ctx: Koa.Context) => {
     const res = await rates.getRates('MONTHLY');
     const flat = toChart(res, ctx.params.token);
     ctx.body = flat;
+});
+
+router.get("/:token/now", async (ctx: Koa.Context) => {
+    const rates = new Crypto(ctx.params.token);
+    const allRates = await rates.getRates();
+    const data = allRates.data as any[];
+    const today = data.find(rate => Object.keys(rate)[0] === moment().format('YYYY-MM-DD'));
+    ctx.body = Object.values(today)[0];
 });
 
 router.get("/:token/weekly", async (ctx: Koa.Context) => {
