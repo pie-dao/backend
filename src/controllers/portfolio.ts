@@ -6,7 +6,15 @@ import Portfolio from "../managers/Portfolio";
 import Stock from "../managers/Stock";
 import Crypto from "../managers/Crypto";
 
-import erc20 from '../../contracts/erc20.js';
+const erc20 = [{
+  constant: false,
+  inputs: [{ name: '_to', type: 'address' }, { name: '_value', type: 'uint256' }],
+  name: 'transfer',
+  outputs: [{ name: '', type: 'bool' }],
+  payable: false,
+  stateMutability: 'nonpayable',
+  type: 'function',
+}];
 
 const routerOpts: Router.IRouterOptions = {
   prefix: "/portfolio",
