@@ -91,28 +91,4 @@ router.get("/awp+++", async (ctx: Koa.Context) => {
   ctx.body = await awp.getState();
 });
 
-router.get("/test", async (ctx: Koa.Context) => {
-  const awp = new Portfolio([
-    { ratio: 1, asset: new Stock('GSG') }, 
-  ]);
-  ctx.body = await awp.test();
-});
-
-router.get("/test/:type/:ticker", async (ctx: Koa.Context) => {
-  const awp = new Portfolio([
-    { ratio: 1, asset: ctx.params.type === 'crypto' ? new Crypto(ctx.params.type) :  new Stock(ctx.params.ticker) }, 
-  ]);
-  ctx.body = await awp.test();
-});
-
-
-
-router.get("/test_btc", async (ctx: Koa.Context) => {
-  const awp = new Portfolio([
-    { ratio: 0.3, asset: new Crypto('BTC') }, 
-    { ratio: 0.5, asset: new Stock('IEI') }, 
-  ]);
-  ctx.body = await awp.test('2019-01-31');
-});
-
 export default router;
