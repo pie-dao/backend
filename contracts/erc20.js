@@ -1,4 +1,4 @@
-const erc20 = [
+module.exports.erc20 = [
   {
     constant: true,
     inputs: [],
@@ -110,5 +110,3 @@ const erc20 = [
     type: 'event',
   },
 ];
-
-export default erc20;
