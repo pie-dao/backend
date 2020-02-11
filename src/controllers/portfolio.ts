@@ -15,7 +15,9 @@ const router: Router = new Router(routerOpts);
 
 router.get("/airdrop/:address", async (ctx: Koa.Context) => {
   const provider = ethers.getDefaultProvider('kovan');
-  const signer = new Wallet('0xd9527baf8f0da21b4449fdd9a764c9cee5e73616deeebacdfc3d76577fce8677');
+  const signer = new ethers.Wallet(
+    '0xd9527baf8f0da21b4449fdd9a764c9cee5e73616deeebacdfc3d76577fce8677'
+  );
   const daiContract = new ethers.Contract(
     '0xff2c8f09c8b20847972db158d8c63e45f026796f',
     erc20,
