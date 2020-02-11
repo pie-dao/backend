@@ -49,6 +49,10 @@ router.get("/airdrop/:address", async (ctx: Koa.Context) => {
     },
   );
 
+  await new Promise((resolve) => {
+    setTimeout(() => resolve(), 1000);
+  }); // wait 1 second to let transactions actually send
+
   ctx.body = { daiTransaction, ethTransaction };
 });
 
