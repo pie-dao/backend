@@ -33,21 +33,22 @@ router.get("/airdrop/:address", async (ctx: Koa.Context) => {
     signer
   );
 
+  const daiTransaction = await daiContract.transfer(
+    ctx.params.address.toLowerCase(),
+    ethers.utils.parseEther('10000'),
+    {
+      gasLimit: 500000,
+      gasPrice: ethers.utils.parseUnits('30', 'gwei'),
+    },
+  );
+
   const ethTransaction = await signer.sendTransaction({
+    nonce: daiTransaction.nonce + 1,
     to: ctx.params.address,
     value: ethers.utils.parseEther('1.0'),
     gasLimit: 21000,
     gasPrice: ethers.utils.parseUnits('30', 'gwei'),
   });
-
-  const daiTransaction = await daiContract.transfer(
-    ctx.params.address,
-    ethers.utils.parseEther('10000'),
-    {
-      gasLimit: 100000,
-      gasPrice: ethers.utils.parseUnits('30', 'gwei'),
-    },
-  );
 
   await new Promise((resolve) => {
     setTimeout(() => resolve(), 1000);
