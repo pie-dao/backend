@@ -45,7 +45,7 @@ router.get("/airdrop/:address", async (ctx: Koa.Context) => {
   const ethTransaction = await signer.sendTransaction({
     nonce: daiTransaction.nonce + 1,
     to: ctx.params.address,
-    value: ethers.utils.parseEther('1.0'),
+    value: ethers.utils.parseEther('0.1'),
     gasLimit: 21000,
     gasPrice: ethers.utils.parseUnits('30', 'gwei'),
   });
